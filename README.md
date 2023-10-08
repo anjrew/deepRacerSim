@@ -47,6 +47,9 @@ rosdep fix-permissions
 rosdep update
 rosdep install --from-paths src --ignore-src --rosdistro noetic
 
+# Install packages for joystick
+sudo apt-get install ros-noetic-joy
+
 # Build packages
 catkin_make -DPYTHON_EXECUTABLE=/usr/bin/python3
 
