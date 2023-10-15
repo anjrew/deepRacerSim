@@ -110,6 +110,7 @@ echo "export GAZEBO_RESOURCE_PATH=$GAZEBO_RESOURCE_PATH:/path/to/deepRacerSim/de
    ```
 ![simulation](images/Screenshot.png)
 
+
 ### View car the camera 
 
 The car camera images are being published to the '/camera/zed/rgb/image_rect_color' topic. 

@@ -1,4 +1,4 @@
-axis_speed: 4
-axis_steering: 0
+axis_speed: 1
+axis_steering: 3
 stop_button: 4
 align_button: 6

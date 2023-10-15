@@ -34,6 +34,9 @@ RUN yes | rosdep install --from-paths src --ignore-src --rosdistro noetic
 # For joystick
 RUN apt-get install ros-noetic-joy 
 
+# For image processing
+RUN apt-get install ros-noetic-image-transport ros-noetic-cv-bridge ros-noetic-image-view
+
 # Build the Catkin workspace and ensure it's sourced
 RUN /bin/bash -c '. /opt/ros/noetic/setup.bash; catkin_make -DPYTHON_EXECUTABLE=/usr/bin/python3'
 RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc

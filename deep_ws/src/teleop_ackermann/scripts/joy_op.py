@@ -11,6 +11,7 @@ class JoyTeleopAckermann():
     def __init__(self):
 
         self.max_speed = rospy.get_param("~max_speed", 4.0)
+        self.min_speed = rospy.get_param("~min_speed", 0.1)
         self.max_steering_angle = rospy.get_param("~max_steering_angle", 0.523599)
         self.steering_axis = rospy.get_param("axis_steering", 0)
         self.speed_axis = rospy.get_param("axis_speed", 4)
@@ -43,20 +44,25 @@ class JoyTeleopAckermann():
         elif(data.buttons[self.align_button]==1):
             self.steering_angle = 0.0
         else:
-            self.speed = round(data.axes[self.speed_axis], 2) * self.max_speed
+            calculated_speed = round(data.axes[self.speed_axis], 2) * self.max_speed
+            self.speed = max(calculated_speed, self.min_speed)
             self.steering_angle = round(data.axes[self.steering_axis], 2) * self.max_steering_angle 
 
     def publish_message(self, event):
-        msg = AckermannDriveStamped()
-        msg.header.stamp = rospy.Time.now()
-        msg.header.frame_id = '/base_link'
-        msg.drive.speed = self.speed
-        msg.drive.steering_angle = self.steering_angle
-        self.ack_pub.publish(msg)
-        rospy.loginfo('\x1b[1M\r'
-                '\033[34;1mSpeed: \033[32;1m%0.2f m/s, '
-                '\033[34;1mSteering Angle: \033[32;1m%0.2f rad\033[0m',
-                self.speed, self.steering_angle)
+        try:
+    
+            msg = AckermannDriveStamped()
+            msg.header.stamp = rospy.Time.now()
+            msg.header.frame_id = '/base_link'
+            msg.drive.speed = self.speed
+            msg.drive.steering_angle = self.steering_angle
+            self.ack_pub.publish(msg)
+            rospy.loginfo('\x1b[1M\r'
+                    '\033[34;1mSpeed: \033[32;1m%0.2f m/s, '
+                    '\033[34;1mSteering Angle: \033[32;1m%0.2f rad\033[0m',
+                    self.speed, self.steering_angle)
+        except Exception as e:
+            rospy.logerr(f"Error in publish_message: {e}")
 
     def print_info(self):
         sys.stderr.write('\x1b[2J\x1b[H')
@@ -73,10 +79,15 @@ class JoyTeleopAckermann():
         self.steering_angle = 0
         self.publish_message(self.speed)
         sys.exit()
-
+        
+    def control(self):
+        rospy.spin()  # This will keep the script running until it's shutdown
+        
 if __name__ == '__main__':
     try:
         rospy.init_node('joy_teleop_ackermann_drive', anonymous=True, log_level=rospy.INFO)
         node = JoyTeleopAckermann()
+        node.control()  # Call the control method to keep the script running
+        
     except KeyboardInterrupt:
         print("Shutting down ROS joy_teleop_ackermann_drive node")

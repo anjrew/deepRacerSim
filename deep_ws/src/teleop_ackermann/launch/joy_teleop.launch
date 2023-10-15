@@ -19,11 +19,13 @@
 
   <!-- additional node args -->
   <arg name="max_speed" default="4.0"/>
-  <arg name="max_steering_angle" default="0.523599"/>
+  <arg name="min_speed" default="0.1"/>
+  <arg name="max_steering_angle" default="30"/>
   <arg name="update_rate" default="50"/>
    
   <node name="teleop" pkg="teleop_ackermann" type="joy_op.py" output="screen">
     <param name="max_speed" value="$(arg max_speed)"/>
+    <param name="min_speed" value="$(arg min_speed)"/>
     <param name="max_steering_angle" value="$(arg max_steering_angle)"/>
     <param name="update_rate" value="$(arg update_rate)"/>
     <remap from="joy" to="$(arg joy_topic)" />

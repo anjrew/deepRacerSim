@@ -1,0 +1,16 @@
+{
+    "cSpell.language": "de,en,en-US,en-GB",
+    "cSpell.words": [
+        "ackermann",
+        "devel",
+        "DPYTHON",
+        "logerr",
+        "loginfo",
+        "rosdep",
+        "rosdistro",
+        "roslaunch",
+        "rosrun",
+        "teleop",
+        "xhost"
+    ]
+}
